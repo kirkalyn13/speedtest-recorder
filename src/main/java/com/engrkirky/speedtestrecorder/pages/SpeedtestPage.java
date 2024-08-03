@@ -10,8 +10,12 @@ import com.microsoft.playwright.Playwright;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Paths;
 
 public class SpeedtestPage {
+    private static final int NAVIGATE_TIME = 60_000;
+    private static final int WAIT_TIME = 5_000;
+    
     public static void record() {
         try (Playwright playwright = Playwright.create()) {
             List<Result> results = new ArrayList<>();
@@ -20,7 +24,7 @@ public class SpeedtestPage {
 
                 page.navigate(BrowserUtils.getUrl());
                 page.click(XPathUtils.BUTTON_XPATH);
-                Thread.sleep(60_000);
+                Thread.sleep(NAVIGATE_TIME);
 
                 Result result = new Result();
 
@@ -31,10 +35,11 @@ public class SpeedtestPage {
                 result.setUl(page.locator(XPathUtils.UPLOAD_XPATH).innerText());
 
                 results.add(result);
+                page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(generateSnapshotFilename())));
                 printResults(result);
 
                 page.close();
-                Thread.sleep(5_000);
+                Thread.sleep(WAIT_TIME);
             }
 
             WriterUtils.writeResults(results);
@@ -53,5 +58,10 @@ public class SpeedtestPage {
                 result.getDl() +
                 ","+
                 result.getUl());
+    }
+
+    private static String generateSnapshotFilename() {
+        long timestamp = Instant.now().toEpochMilli();
+        return String.format("speedtest-%s", timestamp);
     }
 }
