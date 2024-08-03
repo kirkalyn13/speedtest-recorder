@@ -62,6 +62,6 @@ public class SpeedtestPage {
 
     private static String generateSnapshotFilename() {
         long timestamp = Instant.now().toEpochMilli();
-        return String.format("speedtest-%s", timestamp);
+        return String.format("speedtest-%s.png", timestamp);
     }
 }
