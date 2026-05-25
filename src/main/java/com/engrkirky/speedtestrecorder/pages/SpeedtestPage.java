@@ -1,6 +1,7 @@
 package com.engrkirky.speedtestrecorder.pages;
 
 import com.engrkirky.speedtestrecorder.model.Result;
+import com.engrkirky.speedtestrecorder.services.DataPipelineService;
 import com.engrkirky.speedtestrecorder.utils.BrowserUtils;
 import com.engrkirky.speedtestrecorder.utils.WriterUtils;
 import com.engrkirky.speedtestrecorder.utils.XPathUtils;
@@ -24,8 +25,9 @@ public class SpeedtestPage {
      *
      * @throws RuntimeException if the thread execution is interrupted
      */
-    public static void record() {
+    public static void record(DataPipelineService dataPipelineService) {
         try (Playwright playwright = Playwright.create()) {
+            boolean isPipelineHealthy = dataPipelineService.isPipelineHealthy();
             List<Result> results = new ArrayList<>();
             for (int i = 0; i < BrowserUtils.getIterations(); i++) {
                 Page page = BrowserUtils.launchBrowser(playwright);
@@ -39,12 +41,12 @@ public class SpeedtestPage {
                 result.setTimestamp(Instant.now().toString());
                 result.setIsp(page.locator(XPathUtils.ISP_XPATH).innerText());
                 result.setIp(page.locator(XPathUtils.IP_XPATH).innerText());
-                result.setDownloadSpeed(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText());
                 result.setLocation(page.locator(XPathUtils.LOCATION_XPATH).innerText());
-                result.setUploadSpeed(page.locator(XPathUtils.UPLOAD_XPATH).innerText());
-                result.setIdleLatency(page.locator(XPathUtils.IDLE_LATENCY_XPATH).innerText());
-                result.setDownloadLatency(page.locator(XPathUtils.DOWNLOAD_LATENCY_XPATH).innerText());
-                result.setUploadLatency(page.locator(XPathUtils.UPLOAD_LATENCY_XPATH).innerText());
+                result.setDownloadSpeedMbps(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText());
+                result.setUploadSpeedMbps(page.locator(XPathUtils.UPLOAD_XPATH).innerText());
+                result.setIdleLatencyMs(page.locator(XPathUtils.IDLE_LATENCY_XPATH).innerText());
+                result.setDownloadLatencyMs(page.locator(XPathUtils.DOWNLOAD_LATENCY_XPATH).innerText());
+                result.setUploadLatencyMs(page.locator(XPathUtils.UPLOAD_LATENCY_XPATH).innerText());
 
                 closeTrySpeedtest(page);
                 results.add(result);
@@ -56,6 +58,7 @@ public class SpeedtestPage {
             }
 
             WriterUtils.writeResults(results);
+            if (isPipelineHealthy) dataPipelineService.sendResults(results);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -86,15 +89,15 @@ public class SpeedtestPage {
                 "," +
                 result.getLocation() +
                 "," +
-                result.getDownloadSpeed() +
+                result.getDownloadSpeedMbps() +
                 "," +
-                result.getUploadSpeed() +
+                result.getUploadSpeedMbps() +
                 "," +
-                result.getIdleLatency() +
+                result.getIdleLatencyMs() +
                 "," +
-                result.getDownloadLatency() +
+                result.getDownloadLatencyMs() +
                 "," +
-                result.getUploadLatency());
+                result.getUploadLatencyMs());
     }
 
     /**

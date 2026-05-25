@@ -37,15 +37,15 @@ public class WriterUtils {
                         "\t" +
                         result.getLocation() +
                         "\t" +
-                        result.getDownloadSpeed() +
+                        result.getDownloadSpeedMbps() +
                         "\t" +
-                        result.getUploadSpeed() +
+                        result.getUploadSpeedMbps() +
                         "\t" +
-                        result.getIdleLatency() +
+                        result.getIdleLatencyMs() +
                         "\t" +
-                        result.getDownloadLatency() +
+                        result.getDownloadLatencyMs() +
                         "\t" +
-                        result.getUploadLatency() +
+                        result.getUploadLatencyMs() +
                         "\n" ;
                 writer.write(resultStr);
             }

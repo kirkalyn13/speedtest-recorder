@@ -2,10 +2,13 @@ package com.engrkirky.speedtestrecorder.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Represents a recorded internet speed test result.
  */
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @Setter
 public class Result {
@@ -13,9 +16,9 @@ public class Result {
     private String isp;
     private String ip;
     private String location;
-    private String downloadSpeed;
-    private String uploadSpeed;
-    private String idleLatency;
-    private String downloadLatency;
-    private String uploadLatency;
+    private String downloadSpeedMbps;
+    private String uploadSpeedMbps;
+    private String idleLatencyMs;
+    private String downloadLatencyMs;
+    private String uploadLatencyMs;
 }
