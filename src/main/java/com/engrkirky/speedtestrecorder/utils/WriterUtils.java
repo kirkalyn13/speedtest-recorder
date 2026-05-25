@@ -8,9 +8,19 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Utility class for writing speed test results to a file.
+ */
 public class WriterUtils {
     private static final String OUTPUT_FILENAME = "speedtest-results";
 
+    /**
+     * Writes speed test results to a CSV file.
+     *
+     * @param results list of recorded speed test results
+     *
+     * @throws RuntimeException if an I/O error occurs while writing the file
+     */
     public static void writeResults(List<Result> results) {
         long timestamp = Instant.now().toEpochMilli();
         String filename = String.format("%s-%s.csv", OUTPUT_FILENAME, timestamp);

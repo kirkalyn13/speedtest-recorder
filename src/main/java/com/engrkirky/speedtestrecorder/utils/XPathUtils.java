@@ -1,5 +1,8 @@
 package com.engrkirky.speedtestrecorder.utils;
 
+/**
+ * Utility class containing XPath locators for Speedtest elements.
+ */
 public class XPathUtils {
     public static final String BUTTON_XPATH = "//*[@id=\"container\"]/div[1]/div[4]/div/div/div/div[2]/div[2]/div/div[2]/a";
     public static final String ISP_XPATH = "//*[@id=\"container\"]/div[1]/div[4]/div/div/div/div[2]/div[2]/div/div[4]/div/div[3]/div/div/div[2]/div[4]/div/div/div[1]/div[3]/div[2]";

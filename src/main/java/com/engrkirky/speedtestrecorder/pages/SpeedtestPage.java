@@ -12,10 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.nio.file.Paths;
 
+/**
+ * Handles speed test execution and result recording.
+ */
 public class SpeedtestPage {
     private static final int NAVIGATE_TIME = 60_000;
     private static final int WAIT_TIME = 5_000;
-    
+
+    /**
+     * Executes speed tests and stores the collected results.
+     *
+     * @throws RuntimeException if the thread execution is interrupted
+     */
     public static void record() {
         try (Playwright playwright = Playwright.create()) {
             List<Result> results = new ArrayList<>();
@@ -50,12 +58,22 @@ public class SpeedtestPage {
         }
     }
 
+    /**
+     * Closes the "Try Speedtest" popup if visible.
+     *
+     * @param page active browser page instance
+     */
     private static void closeTrySpeedtest(Page page) {
         if(page.locator(XPathUtils.TRY_SPEEDTEST_XPATH).isVisible()) {
             page.click(XPathUtils.TRY_SPEEDTEST_XPATH);
         }
     }
 
+    /**
+     * Prints the speed test result to the console.
+     *
+     * @param result recorded speed test result
+     */
     private static void printResults(Result result) {
         System.out.println(result.getTimestamp() +
                 "," +
@@ -70,6 +88,11 @@ public class SpeedtestPage {
                 result.getUploadSpeed());
     }
 
+    /**
+     * Generates a unique screenshot filename.
+     *
+     * @return generated screenshot filename
+     */
     private static String generateSnapshotFilename() {
         long timestamp = Instant.now().toEpochMilli();
         return String.format("speedtest-%s.png", timestamp);
