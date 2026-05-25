@@ -25,9 +25,9 @@ public class WriterUtils {
                         "," +
                         result.getIp() +
                         "," +
-                        result.getDl() +
+                        result.getDownloadSpeed() +
                         "," +
-                        result.getUl() +
+                        result.getUploadSpeed() +
                         "\n";
                 writer.write(resultStr);
             }

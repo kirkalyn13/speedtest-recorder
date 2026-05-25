@@ -31,8 +31,9 @@ public class SpeedtestPage {
                 result.setTimestamp(Instant.now().toString());
                 result.setIsp(page.locator(XPathUtils.ISP_XPATH).innerText());
                 result.setIp(page.locator(XPathUtils.IP_XPATH).innerText());
-                result.setDl(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText());
-                result.setUl(page.locator(XPathUtils.UPLOAD_XPATH).innerText());
+                result.setDownloadSpeed(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText());
+                result.setLocation(page.locator(XPathUtils.LOCATION_XPATH).innerText());
+                result.setUploadSpeed(page.locator(XPathUtils.UPLOAD_XPATH).innerText());
 
                 results.add(result);
                 page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(generateSnapshotFilename())));
@@ -55,9 +56,11 @@ public class SpeedtestPage {
                 "," +
                 result.getIp() +
                 "," +
-                result.getDl() +
+                result.getLocation() +
+                "," +
+                result.getDownloadSpeed() +
                 ","+
-                result.getUl());
+                result.getUploadSpeed());
     }
 
     private static String generateSnapshotFilename() {

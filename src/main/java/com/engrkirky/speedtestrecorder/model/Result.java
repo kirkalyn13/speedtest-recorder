@@ -9,6 +9,7 @@ public class Result {
     private String timestamp;
     private String isp;
     private String ip;
-    private String dl;
-    private String ul;
+    private String location;
+    private String downloadSpeed;
+    private String uploadSpeed;
 }
