@@ -35,6 +35,7 @@ public class SpeedtestPage {
                 result.setLocation(page.locator(XPathUtils.LOCATION_XPATH).innerText());
                 result.setUploadSpeed(page.locator(XPathUtils.UPLOAD_XPATH).innerText());
 
+                closeTrySpeedtest(page);
                 results.add(result);
                 page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(generateSnapshotFilename())));
                 printResults(result);
@@ -46,6 +47,12 @@ public class SpeedtestPage {
             WriterUtils.writeResults(results);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void closeTrySpeedtest(Page page) {
+        if(page.locator(XPathUtils.TRY_SPEEDTEST_XPATH).isVisible()) {
+            page.click(XPathUtils.TRY_SPEEDTEST_XPATH);
         }
     }
 
