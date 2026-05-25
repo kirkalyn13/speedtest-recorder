@@ -26,7 +26,7 @@ public class WriterUtils {
         String filename = String.format("%s-%s.csv", OUTPUT_FILENAME, timestamp);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            writer.write("Timestamp\tISP\tIP\tLocation\tDownload_Speed\tUpload_Speed\n");
+            writer.write("timestamp\tisp\tip\tlocation\tdownload_speed\tupload_speed\tidle_latency\tdownload_latency\tupload_latency\n");
 
             for (Result result: results) {
                 String resultStr = result.getTimestamp() +
@@ -40,7 +40,13 @@ public class WriterUtils {
                         result.getDownloadSpeed() +
                         "\t" +
                         result.getUploadSpeed() +
-                        "\n";
+                        "\t" +
+                        result.getIdleLatency() +
+                        "\t" +
+                        result.getDownloadLatency() +
+                        "\t" +
+                        result.getUploadLatency() +
+                        "\n" ;
                 writer.write(resultStr);
             }
         } catch (IOException e) {

@@ -42,6 +42,9 @@ public class SpeedtestPage {
                 result.setDownloadSpeed(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText());
                 result.setLocation(page.locator(XPathUtils.LOCATION_XPATH).innerText());
                 result.setUploadSpeed(page.locator(XPathUtils.UPLOAD_XPATH).innerText());
+                result.setIdleLatency(page.locator(XPathUtils.IDLE_LATENCY_XPATH).innerText());
+                result.setDownloadLatency(page.locator(XPathUtils.DOWNLOAD_LATENCY_XPATH).innerText());
+                result.setUploadLatency(page.locator(XPathUtils.UPLOAD_LATENCY_XPATH).innerText());
 
                 closeTrySpeedtest(page);
                 results.add(result);
@@ -84,8 +87,14 @@ public class SpeedtestPage {
                 result.getLocation() +
                 "," +
                 result.getDownloadSpeed() +
-                ","+
-                result.getUploadSpeed());
+                "," +
+                result.getUploadSpeed() +
+                "," +
+                result.getIdleLatency() +
+                "," +
+                result.getDownloadLatency() +
+                "," +
+                result.getUploadLatency());
     }
 
     /**
