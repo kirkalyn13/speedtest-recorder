@@ -9,24 +9,26 @@ import java.time.Instant;
 import java.util.List;
 
 public class WriterUtils {
-    private static final String OUTPUT_FILE = "speedtest-results.txt";
+    private static final String OUTPUT_FILENAME = "speedtest-results";
 
     public static void writeResults(List<Result> results) {
         long timestamp = Instant.now().toEpochMilli();
-        String filename = String.format("%s-%s", OUTPUT_FILE, timestamp);
+        String filename = String.format("%s-%s.csv", OUTPUT_FILENAME, timestamp);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            writer.write("Timestamp,ISP,IP,Download_Speed,Upload_Speed\n");
+            writer.write("Timestamp\tISP\tIP\tLocation\tDownload_Speed\tUpload_Speed\n");
 
             for (Result result: results) {
                 String resultStr = result.getTimestamp() +
-                        "," +
+                        "\t" +
                         result.getIsp() +
-                        "," +
+                        "\t" +
                         result.getIp() +
-                        "," +
+                        "\t" +
+                        result.getLocation() +
+                        "\t" +
                         result.getDownloadSpeed() +
-                        "," +
+                        "\t" +
                         result.getUploadSpeed() +
                         "\n";
                 writer.write(resultStr);
