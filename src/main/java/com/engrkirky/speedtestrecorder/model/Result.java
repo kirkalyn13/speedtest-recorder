@@ -16,9 +16,9 @@ public class Result {
     private String isp;
     private String ip;
     private String location;
-    private String downloadSpeedMbps;
-    private String uploadSpeedMbps;
-    private String idleLatencyMs;
-    private String downloadLatencyMs;
-    private String uploadLatencyMs;
+    private Double downloadSpeedMbps;
+    private Double uploadSpeedMbps;
+    private Double idleLatencyMs;
+    private Double downloadLatencyMs;
+    private Double uploadLatencyMs;
 }

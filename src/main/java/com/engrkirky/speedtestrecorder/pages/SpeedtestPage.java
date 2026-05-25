@@ -43,11 +43,11 @@ public class SpeedtestPage {
                 result.setIsp(page.locator(XPathUtils.ISP_XPATH).innerText());
                 result.setIp(page.locator(XPathUtils.IP_XPATH).innerText());
                 result.setLocation(page.locator(XPathUtils.LOCATION_XPATH).innerText());
-                result.setDownloadSpeedMbps(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText());
-                result.setUploadSpeedMbps(page.locator(XPathUtils.UPLOAD_XPATH).innerText());
-                result.setIdleLatencyMs(page.locator(XPathUtils.IDLE_LATENCY_XPATH).innerText());
-                result.setDownloadLatencyMs(page.locator(XPathUtils.DOWNLOAD_LATENCY_XPATH).innerText());
-                result.setUploadLatencyMs(page.locator(XPathUtils.UPLOAD_LATENCY_XPATH).innerText());
+                result.setDownloadSpeedMbps(Double.parseDouble(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText()));
+                result.setUploadSpeedMbps(Double.parseDouble(page.locator(XPathUtils.UPLOAD_XPATH).innerText()));
+                result.setIdleLatencyMs(Double.parseDouble(page.locator(XPathUtils.IDLE_LATENCY_XPATH).innerText()));
+                result.setDownloadLatencyMs(Double.parseDouble(page.locator(XPathUtils.DOWNLOAD_LATENCY_XPATH).innerText()));
+                result.setUploadLatencyMs(Double.parseDouble(page.locator(XPathUtils.UPLOAD_LATENCY_XPATH).innerText()));
 
                 closeTrySpeedtest(page);
                 results.add(result);
