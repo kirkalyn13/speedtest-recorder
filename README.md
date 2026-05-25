@@ -82,6 +82,34 @@ timestamp	isp	ip	location	download_speed	upload_speed	idle_latency	download_late
 2026-05-25T06:03:44.255704Z	Spectrum	35.144.158.14	Kingsport, TN	1036.72	39.36	27	34	26
 ```
 
+## Data Pipeline Integration
+
+The application optionally supports sending recorded speed test results to an external data pipeline service through a REST API.
+
+When enabled, each result is serialized into JSON and sent to the configured pipeline endpoint after the test execution.
+
+### Configuration
+
+Add the following properties to `config.properties`:
+
+```properties
+pipeline_enabled=true
+pipeline_url=http://localhost:8080
+```
+
+### Features
+
+- Pipeline health check before sending data
+- Configurable enable/disable flag
+- Sends results as JSON payloads
+- Graceful failure handling when the pipeline is unavailable
+
+### Endpoint Used
+
+```text
+POST /v1/speed-test
+```
+
 ## Author
 
 - [Engr. Kirk Alyn Santos](https://github.com/kirkalyn13)
