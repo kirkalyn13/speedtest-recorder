@@ -27,7 +27,8 @@ public class SpeedtestPage {
      */
     public static void record(DataPipelineService dataPipelineService) {
         try (Playwright playwright = Playwright.create()) {
-            boolean isPipelineHealthy = dataPipelineService.isPipelineHealthy();
+            System.out.println("Starting SpeedTest Recording...");
+            boolean isPipelineEnabled = dataPipelineService.isPipelineEnabled();
             List<Result> results = new ArrayList<>();
             for (int i = 0; i < BrowserUtils.getIterations(); i++) {
                 Page page = BrowserUtils.launchBrowser(playwright);
@@ -58,7 +59,7 @@ public class SpeedtestPage {
             }
 
             WriterUtils.writeResults(results);
-            if (isPipelineHealthy) dataPipelineService.sendResults(results);
+            if (isPipelineEnabled) dataPipelineService.sendResults(results);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -81,22 +82,15 @@ public class SpeedtestPage {
      * @param result recorded speed test result
      */
     private static void printResults(Result result) {
-        System.out.println(result.getTimestamp() +
-                "," +
-                result.getIsp() +
-                "," +
-                result.getIp() +
-                "," +
-                result.getLocation() +
-                "," +
-                result.getDownloadSpeedMbps() +
-                "," +
-                result.getUploadSpeedMbps() +
-                "," +
-                result.getIdleLatencyMs() +
-                "," +
-                result.getDownloadLatencyMs() +
-                "," +
+        System.out.printf("%s,%s,%s,%s,%s,%s,%s,%s,%s%n", 
+                result.getTimestamp(),
+                result.getIsp(),
+                result.getIp(),
+                result.getLocation(),
+                result.getDownloadSpeedMbps(),
+                result.getUploadSpeedMbps(),
+                result.getIdleLatencyMs(),
+                result.getDownloadLatencyMs(),
                 result.getUploadLatencyMs());
     }
 

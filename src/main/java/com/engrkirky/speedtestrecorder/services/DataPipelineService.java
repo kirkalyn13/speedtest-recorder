@@ -16,8 +16,9 @@ public class DataPipelineService {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private static final Properties properties = new Properties();
-    private static String BASE_URL = properties.getProperty("pipeline_url");
-
+    private static final String BASE_URL;
+    private static final boolean PIPELINE_ENABLED;
+    private static final String SKIP_MESSAGE = "Skipping sending of results to producer service.";
 
     public DataPipelineService() {
         this.httpClient = HttpClient.newHttpClient();
@@ -33,15 +34,21 @@ public class DataPipelineService {
             throw new RuntimeException("Failed to load config.properties", e);
         }
         BASE_URL = properties.getProperty("pipeline_url");
+        PIPELINE_ENABLED = Boolean.parseBoolean(properties.getProperty("pipeline_enabled"));
     }
 
     /**
-     * Checks whether the data pipeline service is healthy.
+     * Checks whether the data pipeline service is enabled or healthy.
      *
-     * @return true if the pipeline health status is OK, otherwise false
+     * @return true if the pipeline is enabled and health status is OK, otherwise false
      */
-    public boolean isPipelineHealthy() {
+    public boolean isPipelineEnabled() {
         try {
+            if (!PIPELINE_ENABLED) {
+                System.out.printf("Data Pipeline is disabled. %s%n", SKIP_MESSAGE);
+                return false;
+            }
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/health"))
                     .GET()
@@ -50,7 +57,7 @@ public class DataPipelineService {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                System.out.println("Data Pipeline service failed, skipping sending of results to producer service.");
+                System.out.printf("Data Pipeline service failed. %s%n", SKIP_MESSAGE);
                 return false;
             }
 
@@ -58,7 +65,7 @@ public class DataPipelineService {
             return "ok".equalsIgnoreCase(json.path("status").asText());
 
         } catch (Exception e) {
-            System.out.println("Error encountered in checking the data pipeline, skipping sending of results to producer service.");
+            System.out.printf("Error encountered in checking the data pipeline. %s%n", SKIP_MESSAGE);
             return false;
         }
     }
