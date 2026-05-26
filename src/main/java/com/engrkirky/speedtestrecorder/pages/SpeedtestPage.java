@@ -50,16 +50,17 @@ public class SpeedtestPage {
                 result.setUploadLatencyMs(Double.parseDouble(page.locator(XPathUtils.UPLOAD_LATENCY_XPATH).innerText()));
 
                 closeTrySpeedtest(page);
-                results.add(result);
                 page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(generateSnapshotFilename())));
+
+                if (isPipelineEnabled) dataPipelineService.sendResult(result);
                 printResults(result);
 
                 page.close();
                 Thread.sleep(WAIT_TIME);
+                results.add(result);
             }
 
             WriterUtils.writeResults(results);
-            if (isPipelineEnabled) dataPipelineService.sendResults(results);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

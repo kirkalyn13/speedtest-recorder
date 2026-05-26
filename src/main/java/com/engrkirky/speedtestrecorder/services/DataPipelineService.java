@@ -71,24 +71,12 @@ public class DataPipelineService {
     }
 
     /**
-     * Sends multiple speed test results to the data pipeline service.
-     *
-     * @param results list of speed test results to send
-     */
-    public void sendResults(List<Result> results) {
-        for (Result result : results) {
-            boolean sent = sendResult(result);
-            if (!sent) System.out.printf("Failed to send result: %s%n", result.toString());
-        }
-    }
-
-    /**
      * Sends a speed test result to the data pipeline service.
      *
      * @param result speed test result payload to send
      * @return true if the request was successfully processed, otherwise false
      */
-    private boolean sendResult(Result result) {
+    public boolean sendResult(Result result) {
         try {
             String body = objectMapper.writeValueAsString(result);
 
