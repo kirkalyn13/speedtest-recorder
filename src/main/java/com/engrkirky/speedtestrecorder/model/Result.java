@@ -9,16 +9,14 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * Represents a recorded internet speed test result.
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@Getter
-@Setter
-public class Result {
-    private String timestamp;
-    private String isp;
-    private String ip;
-    private String location;
-    private Double downloadSpeedMbps;
-    private Double uploadSpeedMbps;
-    private Double idleLatencyMs;
-    private Double downloadLatencyMs;
-    private Double uploadLatencyMs;
-}
+public record Result (
+    String timestamp,
+    String isp,
+    String ip,
+    String location,
+    Double downloadSpeedMbps,
+    Double uploadSpeedMbps,
+    Double idleLatencyMs,
+    Double downloadLatencyMs,
+    Double uploadLatencyMs
+) {}

@@ -29,23 +29,23 @@ public class WriterUtils {
             writer.write("timestamp\tisp\tip\tlocation\tdownload_speed\tupload_speed\tidle_latency\tdownload_latency\tupload_latency\n");
 
             for (Result result: results) {
-                String resultStr = result.getTimestamp() +
+                String resultStr = result.timestamp() +
                         "\t" +
-                        result.getIsp() +
+                        result.isp() +
                         "\t" +
-                        result.getIp() +
+                        result.ip() +
                         "\t" +
-                        result.getLocation() +
+                        result.location() +
                         "\t" +
-                        result.getDownloadSpeedMbps() +
+                        result.downloadSpeedMbps() +
                         "\t" +
-                        result.getUploadSpeedMbps() +
+                        result.uploadSpeedMbps() +
                         "\t" +
-                        result.getIdleLatencyMs() +
+                        result.idleLatencyMs() +
                         "\t" +
-                        result.getDownloadLatencyMs() +
+                        result.downloadLatencyMs() +
                         "\t" +
-                        result.getUploadLatencyMs() +
+                        result.uploadLatencyMs() +
                         "\n" ;
                 writer.write(resultStr);
             }

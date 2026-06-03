@@ -37,17 +37,16 @@ public class SpeedtestPage {
                 page.click(XPathUtils.BUTTON_XPATH);
                 Thread.sleep(NAVIGATE_TIME);
 
-                Result result = new Result();
-
-                result.setTimestamp(Instant.now().toString());
-                result.setIsp(page.locator(XPathUtils.ISP_XPATH).innerText());
-                result.setIp(page.locator(XPathUtils.IP_XPATH).innerText());
-                result.setLocation(page.locator(XPathUtils.LOCATION_XPATH).innerText());
-                result.setDownloadSpeedMbps(Double.parseDouble(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText()));
-                result.setUploadSpeedMbps(Double.parseDouble(page.locator(XPathUtils.UPLOAD_XPATH).innerText()));
-                result.setIdleLatencyMs(Double.parseDouble(page.locator(XPathUtils.IDLE_LATENCY_XPATH).innerText()));
-                result.setDownloadLatencyMs(Double.parseDouble(page.locator(XPathUtils.DOWNLOAD_LATENCY_XPATH).innerText()));
-                result.setUploadLatencyMs(Double.parseDouble(page.locator(XPathUtils.UPLOAD_LATENCY_XPATH).innerText()));
+                Result result = new Result(
+                        Instant.now().toString(),
+                        page.locator(XPathUtils.ISP_XPATH).innerText(),
+                        page.locator(XPathUtils.IP_XPATH).innerText(),
+                        page.locator(XPathUtils.LOCATION_XPATH).innerText(),
+                        Double.parseDouble(page.locator(XPathUtils.DOWNLOAD_XPATH).innerText()),
+                        Double.parseDouble(page.locator(XPathUtils.UPLOAD_XPATH).innerText()),
+                        Double.parseDouble(page.locator(XPathUtils.IDLE_LATENCY_XPATH).innerText()),
+                        Double.parseDouble(page.locator(XPathUtils.DOWNLOAD_LATENCY_XPATH).innerText()),
+                        Double.parseDouble(page.locator(XPathUtils.UPLOAD_LATENCY_XPATH).innerText()));
 
                 closeTrySpeedtest(page);
                 page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(generateSnapshotFilename())));
@@ -84,15 +83,15 @@ public class SpeedtestPage {
      */
     private static void printResults(Result result) {
         System.out.printf("%s,%s,%s,%s,%s,%s,%s,%s,%s%n", 
-                result.getTimestamp(),
-                result.getIsp(),
-                result.getIp(),
-                result.getLocation(),
-                result.getDownloadSpeedMbps(),
-                result.getUploadSpeedMbps(),
-                result.getIdleLatencyMs(),
-                result.getDownloadLatencyMs(),
-                result.getUploadLatencyMs());
+                result.timestamp(),
+                result.isp(),
+                result.ip(),
+                result.location(),
+                result.downloadSpeedMbps(),
+                result.uploadSpeedMbps(),
+                result.idleLatencyMs(),
+                result.downloadLatencyMs(),
+                result.uploadLatencyMs());
     }
 
     /**
