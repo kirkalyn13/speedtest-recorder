@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -50,7 +49,7 @@ public class DataPipelineService {
             }
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/health"))
+                    .uri(URI.create(BASE_URL + "/v1/health"))
                     .GET()
                     .build();
 
