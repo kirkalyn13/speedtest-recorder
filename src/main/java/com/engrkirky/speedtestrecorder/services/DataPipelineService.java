@@ -16,7 +16,9 @@ public class DataPipelineService {
     private final ObjectMapper objectMapper;
     private static final Properties properties = new Properties();
     private static final String BASE_URL;
+    private static final String API_KEY;
     private static final boolean PIPELINE_ENABLED;
+    private static final String X_API_KEY_HEADER = "X-API-Key";
     private static final String SKIP_MESSAGE = "Skipping sending of results to producer service.";
 
     public DataPipelineService() {
@@ -33,6 +35,7 @@ public class DataPipelineService {
             throw new RuntimeException("Failed to load config.properties", e);
         }
         BASE_URL = properties.getProperty("pipeline_url");
+        API_KEY = properties.getProperty("api_key");
         PIPELINE_ENABLED = Boolean.parseBoolean(properties.getProperty("pipeline_enabled"));
     }
 
@@ -50,6 +53,7 @@ public class DataPipelineService {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/v1/health"))
+                    .header(X_API_KEY_HEADER, API_KEY)
                     .GET()
                     .build();
 
@@ -82,6 +86,7 @@ public class DataPipelineService {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/v1/speed-test"))
                     .header("Content-Type", "application/json")
+                    .header(X_API_KEY_HEADER, API_KEY)
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
