@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 /**
  * Handles speed test execution and result recording.
  */
-public class SpeedtestPage {
+public class SpeedTestPage {
     private static final int NAVIGATE_TIME = 60_000;
     private static final int WAIT_TIME = 5_000;
 
@@ -25,15 +25,16 @@ public class SpeedtestPage {
      *
      * @throws RuntimeException if the thread execution is interrupted
      */
-    public static void record(DataPipelineService dataPipelineService) {
+    public static void record(DataPipelineService dataPipelineService, String url, int iterations) {
         try (Playwright playwright = Playwright.create()) {
             System.out.println("Starting SpeedTest Recording...");
             boolean isPipelineEnabled = dataPipelineService.isPipelineEnabled();
             List<Result> results = new ArrayList<>();
-            for (int i = 0; i < BrowserUtils.getIterations(); i++) {
+
+            for (int i = 0; i < iterations; i++) {
                 Page page = BrowserUtils.launchBrowser(playwright);
 
-                page.navigate(BrowserUtils.getUrl());
+                page.navigate(url);
                 page.click(XPathUtils.BUTTON_XPATH);
                 Thread.sleep(NAVIGATE_TIME);
 

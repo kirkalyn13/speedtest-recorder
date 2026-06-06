@@ -15,28 +15,19 @@ public class DataPipelineService {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private static final Properties properties = new Properties();
-    private static final String BASE_URL;
-    private static final String API_KEY;
-    private static final boolean PIPELINE_ENABLED;
     private static final String X_API_KEY_HEADER = "X-API-Key";
     private static final String SKIP_MESSAGE = "Skipping sending of results to producer service.";
 
-    public DataPipelineService() {
+    private final String baseUrl;
+    private final String apiKey;
+    private final boolean pipelineEnabled;
+
+    public DataPipelineService(boolean pipelineEnabled, String baseUrl, String apiKey) {
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
-    }
-
-    static {
-        try (var stream = DataPipelineService.class
-                .getClassLoader()
-                .getResourceAsStream("config.properties")) {
-            properties.load(stream);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load config.properties", e);
-        }
-        BASE_URL = properties.getProperty("pipeline_url");
-        API_KEY = properties.getProperty("api_key");
-        PIPELINE_ENABLED = Boolean.parseBoolean(properties.getProperty("pipeline_enabled"));
+        this.baseUrl = baseUrl;
+        this.apiKey = apiKey;
+        this.pipelineEnabled = pipelineEnabled;
     }
 
     /**
@@ -46,14 +37,14 @@ public class DataPipelineService {
      */
     public boolean isPipelineEnabled() {
         try {
-            if (!PIPELINE_ENABLED) {
+            if (!pipelineEnabled) {
                 System.out.printf("Data Pipeline is disabled. %s%n", SKIP_MESSAGE);
                 return false;
             }
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/v1/health"))
-                    .header(X_API_KEY_HEADER, API_KEY)
+                    .uri(URI.create(baseUrl + "/v1/health"))
+                    .header(X_API_KEY_HEADER, apiKey)
                     .GET()
                     .build();
 
@@ -77,25 +68,26 @@ public class DataPipelineService {
      * Sends a speed test result to the data pipeline service.
      *
      * @param result speed test result payload to send
-     * @return true if the request was successfully processed, otherwise false
      */
-    public boolean sendResult(Result result) {
+    public void sendResult(Result result) {
         try {
             String body = objectMapper.writeValueAsString(result);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/v1/speed-test"))
+                    .uri(URI.create(baseUrl + "/v1/speed-test"))
                     .header("Content-Type", "application/json")
-                    .header(X_API_KEY_HEADER, API_KEY)
+                    .header(X_API_KEY_HEADER, apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            return response.statusCode() >= 200 && response.statusCode() < 300;
+            if (response.statusCode() >= 200) {
+                response.statusCode();
+            }
 
         } catch (Exception e) {
-            return false;
+            System.out.printf("Error encountered in sending results to pipeline: %s%n", SKIP_MESSAGE);
         }
     }
 }

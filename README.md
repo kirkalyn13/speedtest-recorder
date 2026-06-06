@@ -88,6 +88,24 @@ mvn clean package
 java -jar target/speedtest-recorder.jar
 ```
 
+### Arguments
+
+All arguments are optional and will fall back to `config.properties` values if not provided.
+
+| Argument | Description                                                                                   | Example |
+|---|-----------------------------------------------------------------------------------------------|---|
+| `--url` | Speedtest URL to run against                                                                  | `--url=https://www.speedtest.net/` |
+| `--iterations` | Number of test iterations to run                                                              | `--iterations=3` |
+| `--pipeline-enabled` | Enable or disable pipeline publishing                                                         | `--pipeline-enabled=true` |
+| `--pipeline-url` | Base URL of the pipeline service                                                              | `--pipeline-url=http://localhost:8081/api` |
+| `--api-key` | API key for the pipeline service (Highly discouraged, please configure via `config.properties` | `--api-key=your_key_here` |
+
+Example with arguments:
+
+```bash
+java -jar target/speedtest-recorder.jar --iterations=3 --pipeline-enabled=true --api-key=secret
+```
+
 ## Output
 
 The application generates:
