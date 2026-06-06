@@ -84,8 +84,8 @@ api_key=your_api_key_here
 Install dependencies and run:
 
 ```bash
-mvn clean install
-mvn exec:java
+mvn clean package
+java -jar target/speedtest-recorder.jar
 ```
 
 ## Output
