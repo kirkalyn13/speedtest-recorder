@@ -1,12 +1,9 @@
 package com.engrkirky.speedtestrecorder;
 
-
-import com.engrkirky.speedtestrecorder.pages.SpeedtestPage;
-import com.engrkirky.speedtestrecorder.services.DataPipelineService;
+import com.engrkirky.speedtestrecorder.services.SpeedTestService;
 
 public class Main {
     public static void main(String[] args) {
-        DataPipelineService dataPipelineService = new DataPipelineService();
-        SpeedtestPage.record(dataPipelineService);
+        SpeedTestService.run(args);
     }
 }
