@@ -32,28 +32,34 @@ public class SpeedTestService {
      * @param args command-line arguments
      */
     public static void run(String[] args) {
+        String url = DEFAULT_URL;
+        int iterations = DEFAULT_ITERATIONS;
+        boolean pipelineEnabled = isPipelineEnabled();
+        String pipelineUrl = getPipelineUrl();
+        String apiKey = getApiKey();
+
         for (String arg : args) {
-            String url = arg.startsWith("--url") ? arg.split("=")[1] : getUrl();
-            int iterations = arg.startsWith("--iterations=") ? Integer.parseInt(arg.split("=")[1]) : getIterations();
-            boolean pipelineEnabled = arg.startsWith("--pipeline-enabled=") ? Boolean.parseBoolean(arg.split("=")[1])  : isPipelineEnabled();
-            String pipelineUrl = arg.startsWith("--pipeline-url=") ? arg.split("=")[1] : getPipelineUrl();
-            String apiKey = arg.startsWith("--api-key=") ? arg.split("=")[1] : getApiKey();
-
-            System.out.printf("""
-                ================================
-                Speedtest Recorder
-                ================================
-                URL:              %s
-                Iterations:       %d
-                Pipeline Enabled: %s
-                Pipeline URL:     %s
-                API Key:          %s
-                ================================
-                %n""", url, iterations, pipelineEnabled, pipelineUrl, apiKey.isBlank() ? "not set" : "***");
-
-            DataPipelineService dataPipelineService = new DataPipelineService(pipelineEnabled, pipelineUrl, apiKey);
-            SpeedTestPage.record(dataPipelineService, url, iterations);
+            if (arg.startsWith("--url=")) url = arg.split("=")[1];
+            else if (arg.startsWith("--iterations=")) iterations = Integer.parseInt(arg.split("=")[1]);
+            else if (arg.startsWith("--pipeline-enabled=")) pipelineEnabled = Boolean.parseBoolean(arg.split("=")[1]);
+            else if (arg.startsWith("--pipeline-url=")) pipelineUrl = arg.split("=")[1];
+            else if (arg.startsWith("--api-key=")) apiKey = arg.split("=")[1];
         }
+
+        System.out.printf("""
+        ================================
+        Speedtest Recorder
+        ================================
+        URL:              %s
+        Iterations:       %d
+        Pipeline Enabled: %s
+        Pipeline URL:     %s
+        API Key:          %s
+        ================================
+        %n""", url, iterations, pipelineEnabled, pipelineUrl, apiKey.isBlank() ? "not set" : "***");
+
+        DataPipelineService dataPipelineService = new DataPipelineService(pipelineEnabled, pipelineUrl, apiKey);
+        SpeedTestPage.record(dataPipelineService, url, iterations);
     }
 
     /**
