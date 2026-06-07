@@ -39,7 +39,11 @@ public class SpeedTestService {
         String apiKey = getApiKey();
 
         for (String arg : args) {
-            if (arg.startsWith("--url=")) url = arg.split("=")[1];
+            if (arg.startsWith("--help") || arg.startsWith("--h")) {
+                printHelp();
+                return;
+            }
+            else if (arg.startsWith("--url=")) url = arg.split("=")[1];
             else if (arg.startsWith("--iterations=")) iterations = Integer.parseInt(arg.split("=")[1]);
             else if (arg.startsWith("--pipeline-enabled=")) pipelineEnabled = Boolean.parseBoolean(arg.split("=")[1]);
             else if (arg.startsWith("--pipeline-url=")) pipelineUrl = arg.split("=")[1];
@@ -60,6 +64,38 @@ public class SpeedTestService {
 
         DataPipelineService dataPipelineService = new DataPipelineService(pipelineEnabled, pipelineUrl, apiKey);
         SpeedTestPage.record(dataPipelineService, url, iterations);
+    }
+
+    /**
+     * Prints CLI usage and available options for the Speedtest Recorder application.
+     */
+    private static void printHelp() {
+        System.out.println("""
+        ================================
+        Speedtest Recorder - Help
+        ================================
+        Usage: java -jar speedtest-recorder.jar [OPTIONS]
+
+        Options:
+          --url=<value>               Speedtest URL to run against
+                                      Default: https://www.speedtest.net/
+
+          --iterations=<value>        Number of test iterations to run
+                                      Default: 1
+
+          --pipeline-enabled=<value>  Enable or disable pipeline publishing
+                                      Default: true
+
+          --pipeline-url=<value>      Base URL of the pipeline service
+                                      Default: http://localhost:8081/api
+
+          --api-key=<value>           API key for the pipeline service
+                                      ⚠ Highly discouraged — configure via config.properties instead
+
+        Example:
+          java -jar speedtest-recorder.jar --iterations=3 --pipeline-enabled=true
+        ================================
+        """);
     }
 
     /**
