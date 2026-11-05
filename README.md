@@ -132,3 +132,5 @@ timestamp	isp	ip	location	download_speed_mbps upload_speed_mbps	idle_latency_ms	
 ## Author
 
 - [Engr. Kirk Alyn Santos](https://github.com/kirkalyn13)
+
+© 2026 Kirk Alyn Santos. All rights reserved.
